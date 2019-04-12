@@ -1,0 +1,20 @@
+认识工作流：业务过程模块的一步一步自动化流程，
+认识Activiti：是一个开源的自动化业务工作流引擎，常用于审批流程中，多个参与者按照某种约定，规则传递文档，信息，任务的过程的自动化进行，最终实现某个预期的业务目标，或者促成此目标的实现．
+
+Activiti的选择：功能全面，框架覆盖了业务流程管理，工作流，服务协作等，而且开源，便于扩展，基于Apache的开源平台，提供了eclipse插件，开发人员可以直接绘画出业务流程图．
+
+工作流的创建过程：
+绘制流程图（画流程图，将整个业务流程抽象成标准流程图）－＞部署流程图（流程定义）－＞启动流程实例（流程实例：根据流程定义具体的一次执行过程）－＞查询流程实例，操作流程实例，结束流程实例
+Activiti框架提供的Service对象
+
+    RepositoryService----操作静态的资源（流程定义，bpmn、png）
+    RuntimeService-----操作流程实例（启动流程实例、查询流程实例、结束流程实例）
+    TaskService-----操作任务（查询任务、办理任务）
+    HistoryService----操作历史数据
+
+Activiti框架提供的对象(和表有对应关系)
+
+    Deployment-----act_re_deployment
+    ProcessDefinition----act_re_procdef
+    ProcessInstance-----act_ru_execution
+    Task-----act_ru_task
