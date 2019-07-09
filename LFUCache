@@ -1,0 +1,77 @@
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+
+public class LFUCache {
+	//最近最少使用先被删除	
+	private int size;//
+	private HashMap<Integer, Integer> valuesMap;//key and value
+	private HashMap<Integer, Integer> countsMap;//key and count
+	private HashMap<Integer, LinkedHashSet<Integer>> map;// count and items
+	private int min = -1;
+    public LFUCache(int capacity) {
+        this.size = capacity;
+        valuesMap = new HashMap<>();
+        countsMap = new HashMap<>();
+        map = new HashMap<>();
+        map.put(1, new LinkedHashSet<>());
+    }
+    
+    public int get(int key) {
+    	if (!valuesMap.containsKey(key)){
+    		return -1;
+    	}
+    	int count = countsMap.get(key);
+    	countsMap.put(key, count+1);//count+1    	
+    	
+    	map.get(count).remove(key);//remove key from count=count, and add key to count=count+1
+    	if (!map.containsKey(count+1)){
+    		map.put(count+1, new LinkedHashSet<>());    		
+    	}
+    	map.get(count+1).add(key);
+    	
+    	//modify min
+    	if (min == count && map.get(count).size() <= 0){
+    		min ++;
+    	}    	
+		return valuesMap.get(key);        
+    }
+    
+    public void put(int key, int value) {
+    	if (size <= 0){
+    		return;
+    	}
+    	if (valuesMap.containsKey(key)){//update     		
+    		valuesMap.put(key, value);
+    		get(key);
+    		return;
+    	}
+        if (valuesMap.size() >= size){
+        	int removedKey = map.get(min).iterator().next();
+        	valuesMap.remove(removedKey);
+        	countsMap.remove(removedKey);
+        	map.get(min).remove(removedKey);        	
+        }
+       //add new element
+        valuesMap.put(key, value);
+        min = 1;
+        countsMap.put(key, min);
+        if (!map.containsKey(min)){
+        	map.put(min, new LinkedHashSet<>());        	
+        }
+        map.get(min).add(key);
+    }
+    
+    public static void main(String[] args) {
+		// TODO Auto-generated method stub
+    	LFUCache lfu = new LFUCache(2);
+    	lfu.put(3, 1);
+    	lfu.put(2, 1);
+    	lfu.put(2, 2);
+    	lfu.put(4, 4);
+    	lfu.get(2);    	
+    	
+	}
+
+    
+        
+}
