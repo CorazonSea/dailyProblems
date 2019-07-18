@@ -1,0 +1,43 @@
+class Solution {
+	public static int[] sortedSquares(int[] A) {
+		if (A == null || A.length <= 0){
+			return null;
+		}
+		for(int i=0; i<A.length; i++){
+			A[i] = A[i] * A[i];			
+		}		
+        return quickSort(A, 0, A.length-1);
+		
+    }
+	//快速排序
+	//时间复杂度：最好的情况是O(n)，最差的情况是O(n2)，所以平时说的O(nlogn)，为其平均时间复杂度。
+	//空间复杂度：
+	public static int[] quickSort(int[] A, int m, int n){
+		if (m >= n){
+			return A;
+		}
+		int left = m, right = n;
+		int mid = A[left];
+		while(left < right){
+			while(left < right & A[right] > mid){
+				right --;			
+			}
+			if (left < right){
+				A[left] = A[right];	
+				left++;
+			}
+			while(left < right & A[left] < mid){
+				left++;
+			}
+			if (left < right){
+				A[right] = A[left];		
+				right--;
+			}
+		}
+		A[left] = mid;
+		quickSort(A, m, left-1);
+		quickSort(A, left+1, n);
+		return A;
+	}
+	
+}
